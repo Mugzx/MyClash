@@ -590,7 +590,7 @@ function createRegionGroup(name, icon, proxies) {
       ...selectBaseOption,
       name,
       icon,
-      proxies: [autoTestName, loadBalanceName, ...proxies],
+      proxies: [...proxies, autoTestName, loadBalanceName],
     },
   ];
 }
