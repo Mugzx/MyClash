@@ -755,13 +755,21 @@ function main(config) {
   }
 
   // 添加其他策略组
-  functionalGroups.push({
-    ...selectBaseOption,
-    name: '直连',
-    proxies: ['🇨🇳 直连 | IPv4优先', '🇨🇳 直连 | IPv6优先', '🇨🇳 直连 | 双栈'],
-    url: 'https://connectivitycheck.platform.hicloud.com/generate_204',
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/China_Map.png',
-  });
+  functionalGroups.push(
+    {
+      ...selectBaseOption,
+      name: '直连',
+      proxies: ['🇨🇳 直连 | IPv4优先', '🇨🇳 直连 | IPv6优先', '🇨🇳 直连 | 双栈'],
+      url: 'https://connectivitycheck.platform.hicloud.com/generate_204',
+      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/China_Map.png',
+    },
+    {
+      ...selectBaseOption,
+      name: '漏网之鱼',
+      proxies: ['默认代理', '直连'],
+      icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Stack.png',
+    },
+  );
 
   // 构建 GLOBAL 全局策略组
   const globalGroup = {
@@ -911,7 +919,7 @@ function main(config) {
     'RULE-SET,geolocation-!cn,默认代理',
     'RULE-SET,cn_additional,直连',
     'RULE-SET,cn_ip,直连',
-    'MATCH,默认代理',
+    'MATCH,漏网之鱼',
   ];
 
   return newConfig;
