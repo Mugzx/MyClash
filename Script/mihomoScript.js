@@ -64,6 +64,9 @@ const excludeFilter =
 
 // 预定义 rules
 const rules = [
+  // 禁用国外 QUIC 流量
+  'AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,cn_additional),(RULE-SET,cn_ip,no-resolve)))))),REJECT',
+
   // 私有网络直连
   'RULE-SET,private,直连',
   'RULE-SET,private_ip,直连,no-resolve',
