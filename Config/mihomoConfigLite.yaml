@@ -256,7 +256,7 @@ group_common:
       empty-fallback: REJECT,
       url: 'https://g.cn/generate_204',
       lazy: true,
-      tolerance: 100,
+      tolerance: 50,
       include-all: true,
       exclude-type: 'DIRECT',
       icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png',

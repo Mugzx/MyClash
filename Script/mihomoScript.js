@@ -230,7 +230,7 @@ const selectBaseOption = {
 const urlTestBaseOption = {
   ...groupBaseOption,
   type: 'url-test',
-  tolerance: 100,
+  tolerance: 50,
   'exclude-type': 'DIRECT',
   icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png',
   hidden: true,
