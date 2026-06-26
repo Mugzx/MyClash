@@ -809,7 +809,6 @@ function main(config) {
   newConfig['tun'] = {
     enable: true,
     stack: 'system',
-    mtu: 1500,
     'auto-route': true,
     'strict-route': true,
     'auto-redirect': true,
