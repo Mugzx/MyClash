@@ -188,7 +188,7 @@ const serviceConfigs = [
   {
     key: 'ai',
     name: 'AI',
-    defaultSelected: '日本',
+    defaultSelected: '美国',
     providers: {
       ai: {
         ...ruleProviderCommonDomain,

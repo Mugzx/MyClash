@@ -81,8 +81,8 @@ foreignDNS:
 dns:
   enable: true
   ipv6: true
-  cache-algorithm: arc
   use-hosts: true
+  cache-algorithm: arc
   use-system-hosts: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
@@ -345,7 +345,7 @@ proxy-groups:
 
   - name: 'AI'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '日本'
+    default-selected: '美国'
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ChatGPT.png'
 
   - name: 'Telegram'
