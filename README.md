@@ -50,7 +50,7 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/lite.yaml
 - `自动选择`
 - `负载均衡`
 - `AI`
-- `Media` （YouTube+TikTok+Instagram+Twitch+Twitter+Spotify）
+- `Media` （YouTube+TikTok+Instagram+Twitch+Spotify）
 - `FCM`
 - `Google`
 - `GitHub`
@@ -58,6 +58,7 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/lite.yaml
 - `Apple`
 - `Telegram`
 - `Steam`
+- `Twitter`
 - `AdBlock`
 - `直连` （可自定义IP优先级，建议使用 `IPv4优先`，防止出现一些问题）
 - `漏网之鱼`
