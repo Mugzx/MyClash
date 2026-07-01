@@ -2,44 +2,11 @@
 
 Mihomo（Clash Meta）配置文件和覆写脚本，分别提供全量版和精简版，无DNS泄露，内置多项分流策略、地区策略，实现全局排除节点、自动识别节点倍率功能，解决机场使用私有DNS导致无法解析节点域名的问题
 
-友情推荐，非常好用、省电且内存占用低的代理软件：[Bettbox](https://github.com/appshubcc/Bettbox)
-
-## 覆写脚本
-
-> [!IMPORTANT]
->
-> - _注意⚠️：该脚本仅适用于覆写机场提供的配置文件，请勿用于覆写自己编写的配置文件_
-> - _脚本已解决机场使用私有DNS导致无法解析节点域名的问题_
-> - _地区策略组根据是否匹配到节点来生成_
-> - _全量版脚本内的分流策略组均支持自定义是否启用（默认启用），支持自定义是否过滤高倍率节点（默认禁用）_
-
-### 使用方法（脚本）
-
-复制以下任意一个链接或者复制完整代码后按如图所示步骤导入到代理客户端，以 [Bettbox](https://github.com/appshubcc/Bettbox) 为例
-
-- [mihomoScript.js（全量版）](/Script/mihomoScript.js)
-
-```txt
-https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/mihomoScript.js
-```
-
-- [Script.js（精简版）](/Script/Script.js) （仅包含少量分流策略组）
-
-```txt
-https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/Script.js
-```
-
-|                                                                                   |
-| --------------------------------------------------------------------------------- |
-| ![img](https://raw.githubusercontent.com/AIsouler/MyClash/main/Image/import.webp) |
-
 ## 配置文件
 
-> [!IMPORTANT]
+> [!WARNING]
 >
-> - _配置文件实现的效果和脚本基本一致_
 > - _不支持自定义是否启用策略组，不支持自定义是否过滤高倍率节点_
-> - _无法像脚本那样实现不生成未匹配到节点的策略组_
 > - _对于使用私有DNS的机场，需要手动将私有DNS填入到配置文件中_
 > - _未匹配到节点的策略组将回退到 REJECT_
 
@@ -47,16 +14,16 @@ https://raw.githubusercontent.com/AIsouler/MyClash/main/Script/Script.js
 
 复制以下任意一个链接或者复制完整代码后导入代理客户端
 
-- [mihomoConfig.yaml（全量版）](/Config/mihomoConfig.yaml)
+- [Origin](/Config/origin.yaml)
 
 ```txt
-https://raw.githubusercontent.com/AIsouler/MyClash/main/Config/mihomoConfig.yaml
+https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/origin.yaml
 ```
 
-- [mihomoConfigLite.yaml（精简版）](/Config/mihomoConfigLite.yaml)（仅包含少量分流策略组）
+- [Lite](/Config/lite.yaml)（仅包含少量分流策略组）
 
 ```txt
-https://raw.githubusercontent.com/AIsouler/MyClash/main/Config/mihomoConfigLite.yaml
+https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/lite.yaml
 ```
 
 ## 说明
@@ -79,13 +46,11 @@ https://raw.githubusercontent.com/AIsouler/MyClash/main/Config/mihomoConfigLite.
 
 ## 内置策略组
 
-> - _若不需要某个分流策略组，可在脚本中将 `ruleOptionsEnable` 对应值设为 `false`_
-
 - `默认代理`
 - `自动选择`
 - `负载均衡`
 - `AI`
-- `Media` （YouTube+Instagram+Netflix+HBO+Twitch+Disney+NicoNico+BBC+Pornhub）
+- `Media` （YouTube+TikTok+Instagram+Twitch+Twitter+Spotify）
 - `FCM`
 - `Google`
 - `GitHub`
@@ -93,13 +58,11 @@ https://raw.githubusercontent.com/AIsouler/MyClash/main/Config/mihomoConfigLite.
 - `Apple`
 - `Telegram`
 - `Steam`
-- `TikTok`
-- `Twitter`
-- `Emby`
-- `Spotify`
 - `AdBlock`
 - `直连` （可自定义IP优先级，建议使用 `IPv4优先`，防止出现一些问题）
 - `漏网之鱼`
+
+并不打算支持五大流媒体平台，需要请使用上游。
 
 ## 内置节点组
 
@@ -114,15 +77,6 @@ https://raw.githubusercontent.com/AIsouler/MyClash/main/Config/mihomoConfigLite.
 - `低倍率节点`
 - `高倍率节点`
 - `其他节点`
-
-## 效果预览
-
-- 客户端： [Bettbox](https://github.com/appshubcc/Bettbox)
-
-|                                                                                  |                                                                                  |                                                                                  |
-| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| ![img](https://raw.githubusercontent.com/AIsouler/MyClash/main/Image/IMG_1.webp) | ![img](https://raw.githubusercontent.com/AIsouler/MyClash/main/Image/IMG_2.webp) | ![img](https://raw.githubusercontent.com/AIsouler/MyClash/main/Image/IMG_3.webp) |
-| ![img](https://raw.githubusercontent.com/AIsouler/MyClash/main/Image/IMG_4.webp) | ![img](https://raw.githubusercontent.com/AIsouler/MyClash/main/Image/IMG_5.webp) |                                                                                  |
 
 ## 致谢
 

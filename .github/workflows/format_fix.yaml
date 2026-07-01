@@ -4,7 +4,6 @@ on:
   push:
     branches: ['main']
     paths:
-      - 'Script/*'
       - '**/*.yaml'
       - '**/*.yml'
       - '.prettierrc*'
@@ -29,11 +28,6 @@ jobs:
       - name: install tools
         run: |
           npm install -g prettier
-
-      # 格式化 JS
-      - name: format js files
-        run: |
-          prettier Script/*.js --write
 
       # 格式化 YAML
       - name: format yaml files
