@@ -19,7 +19,7 @@ global_exclude_filter:
     exclude-filter: '群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|禁止|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|⚠️|@|Expire|http|com',
   }
 
-# 代理提供商，可配置多个。
+# 代理提供商，可配置多个
 proxy-providers:
   provider1:
     <<: [*proxy_providers_common, *global_exclude_filter]
@@ -133,6 +133,7 @@ rule_providers_common:
 
 # 定义 Rule Providers
 rule-providers:
+  # --- 基础规则集 ---
   fakeip_filter:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/wwqgtxx/clash-rules@release/fakeip-filter.mrs'
@@ -143,6 +144,8 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/gfw.mrs'
     path: './ruleset/gfw.mrs'
     path-in-bundle: 'geo/geosite/gfw.mrs'
+
+  # --- 海外服务规则集 ---
   ai:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.mrs'
@@ -228,6 +231,8 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/twitter.mrs'
     path: './ruleset/twitter_ip.mrs'
     path-in-bundle: 'geo/geoip/twitter.mrs'
+
+  # --- 国内/直连规则集 ---
   adblockmihomolite:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomolite.mrs'

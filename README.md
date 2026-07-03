@@ -1,7 +1,5 @@
 # MyClash
 
-无DNS泄露，内置多项分流策略、地区策略，实现全局排除节点、自动识别节点倍率功能
-
 ## 配置文件
 
 ### 使用方法（配置）
@@ -29,7 +27,6 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
 - `负载均衡`
 - `AI`
 - `Media` （YouTube+TikTok+Instagram+Twitch+Spotify）
-  - 并不打算支持五大流媒体平台。
 - `FCM`
 - `Google`
 - `GitHub`
