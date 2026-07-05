@@ -600,6 +600,7 @@ rules:
   - RULE-SET,telegram,Telegram
   - RULE-SET,steam,Steam
   - RULE-SET,twitter,Twitter
+  - DOMAIN-KEYWORD,mcp,AI
 
   # 代理规则（IP）
   - RULE-SET,google_ip,Google,no-resolve
