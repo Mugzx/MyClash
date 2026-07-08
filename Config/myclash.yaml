@@ -161,51 +161,16 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/tiktok.mrs'
     path: './ruleset/tiktok.mrs'
     path-in-bundle: 'geo/geosite/tiktok.mrs'
-  instagram:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/instagram.mrs'
-    path: './ruleset/instagram.mrs'
-    path-in-bundle: 'geo/geosite/instagram.mrs'
   twitch:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitch.mrs'
     path: './ruleset/twitch.mrs'
     path-in-bundle: 'geo/geosite/twitch.mrs'
-  spotify:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/spotify.mrs'
-    path: './ruleset/spotify.mrs'
-    path-in-bundle: 'geo/geosite/spotify.mrs'
-  googlefcm:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.mrs'
-    path: './ruleset/googlefcm.mrs'
-    path-in-bundle: 'geo/geosite/googlefcm.mrs'
-  google:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs'
-    path: './ruleset/google.mrs'
-    path-in-bundle: 'geo/geosite/google.mrs'
-  google_ip:
-    <<: *rule_providers_ip
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs'
-    path: './ruleset/google_ip.mrs'
-    path-in-bundle: 'geo/geoip/google.mrs'
   github:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs'
     path: './ruleset/github.mrs'
     path-in-bundle: 'geo/geosite/github.mrs'
-  microsoft:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs'
-    path: './ruleset/microsoft.mrs'
-    path-in-bundle: 'geo/geosite/microsoft.mrs'
-  apple:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.mrs'
-    path: './ruleset/apple.mrs'
-    path-in-bundle: 'geo/geosite/apple.mrs'
   telegram:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs'
@@ -221,16 +186,26 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/steam.mrs'
     path: './ruleset/steam.mrs'
     path-in-bundle: 'geo/geosite/steam.mrs'
-  twitter:
+  google:
     <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitter.mrs'
-    path: './ruleset/twitter.mrs'
-    path-in-bundle: 'geo/geosite/twitter.mrs'
-  twitter_ip:
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs'
+    path: './ruleset/google.mrs'
+    path-in-bundle: 'geo/geosite/google.mrs'
+  google_ip:
     <<: *rule_providers_ip
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/twitter.mrs'
-    path: './ruleset/twitter_ip.mrs'
-    path-in-bundle: 'geo/geoip/twitter.mrs'
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs'
+    path: './ruleset/google_ip.mrs'
+    path-in-bundle: 'geo/geoip/google.mrs'
+  googlefcm:
+    <<: *rule_providers_domain
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.mrs'
+    path: './ruleset/googlefcm.mrs'
+    path-in-bundle: 'geo/geosite/googlefcm.mrs'
+  microsoft:
+    <<: *rule_providers_domain
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs'
+    path: './ruleset/microsoft.mrs'
+    path-in-bundle: 'geo/geosite/microsoft.mrs'
 
   # --- 国内/直连规则集 ---
   adblockmihomolite:
@@ -253,21 +228,11 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games@cn.mrs'
     path: './ruleset/category-games@cn.mrs'
     path-in-bundle: 'geo/geosite/category-games@cn.mrs'
-  epicgames:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/epicgames.mrs'
-    path: './ruleset/epicgames.mrs'
-    path-in-bundle: 'geo/geosite/epicgames.mrs'
   nvidia_cn:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/nvidia@cn.mrs'
     path: './ruleset/nvidia@cn.mrs'
     path-in-bundle: 'geo/geosite/nvidia@cn.mrs'
-  apple_cn:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple@cn.mrs'
-    path: './ruleset/apple@cn.mrs'
-    path-in-bundle: 'geo/geosite/apple@cn.mrs'
   microsoft_cn:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft@cn.mrs'
@@ -426,33 +391,16 @@ proxy-groups:
   - name: 'AI'
     <<: [*group_common_select, *proxies_default]
     default-selected: '美国'
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ChatGPT.png'
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png'
 
   - name: 'Media'
     default-selected: '日本'
     <<: [*group_common_select, *proxies_default]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/ForeignMedia.png'
-
-  - name: 'FCM'
-    <<: [*group_common_select, *proxies_direct]
-    default-selected: '直连'
-    icon: 'https://fastly.jsdelivr.net/gh/MiToverG422/Qure@master/IconSet/Color/fcm.png'
-
-  - name: 'Google'
-    <<: [*group_common_select, *proxies_default]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png'
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Media.png'
 
   - name: 'GitHub'
     <<: [*group_common_select, *proxies_default]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png'
-
-  - name: 'Microsoft'
-    <<: [*group_common_select, *proxies_direct]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png'
-
-  - name: 'Apple'
-    <<: [*group_common_select, *proxies_direct]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Apple.png'
 
   - name: 'Telegram'
     <<: [*group_common_select, *proxies_default]
@@ -462,19 +410,28 @@ proxy-groups:
     <<: [*group_common_select, *proxies_direct]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Steam.png'
 
-  - name: 'Twitter'
+  - name: 'Google'
     <<: [*group_common_select, *proxies_default]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Twitter.png'
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png'
 
-  - name: 'AdBlock'
-    <<: [*group_common_select, *proxies_reject]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Advertising.png'
+  - name: 'FCM'
+    <<: [*group_common_select, *proxies_direct]
+    default-selected: '直连'
+    icon: 'https://fastly.jsdelivr.net/gh/MiToverG422/Qure@master/IconSet/Color/fcm.png'
+
+  - name: 'Microsoft'
+    <<: [*group_common_select, *proxies_direct]
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png'
 
   - name: '直连'
     <<: *group_common_select
     proxies: ['🇨🇳 直连 | IPv4优先', '🇨🇳 直连 | IPv6优先', '🇨🇳 直连 | 双栈']
     url: 'https://connectivitycheck.platform.hicloud.com/generate_204'
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/China_Map.png'
+
+  - name: 'AdBlock'
+    <<: [*group_common_select, *proxies_reject]
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AdBlack.png'
 
   - name: '漏网之鱼'
     <<: *group_common_select
@@ -574,12 +531,9 @@ rules:
 
   # 国内直连
   - RULE-SET,games_cn,直连 # 已包含 steam 下载域名
-  - RULE-SET,epicgames,直连
   - RULE-SET,nvidia_cn,直连
-  - RULE-SET,apple_cn,直连
   - RULE-SET,microsoft_cn,直连
   - DOMAIN,auroraoss.com,直连 # 避免 Aurora Store 无法匿名
-  - DOMAIN,fsend.cn,直连
   - DOMAIN,international-gfe.download.nvidia.com,直连
 
   # 广告拦截
@@ -589,23 +543,18 @@ rules:
   - RULE-SET,ai,AI
   - RULE-SET,youtube,Media
   - RULE-SET,tiktok,Media
-  - RULE-SET,instagram,Media
   - RULE-SET,twitch,Media
-  - RULE-SET,spotify,Media
-  - RULE-SET,googlefcm,FCM
-  - RULE-SET,google,Google
   - RULE-SET,github,GitHub
-  - RULE-SET,microsoft,Microsoft
-  - RULE-SET,apple,Apple
   - RULE-SET,telegram,Telegram
   - RULE-SET,steam,Steam
-  - RULE-SET,twitter,Twitter
+  - RULE-SET,google,Google
+  - RULE-SET,googlefcm,FCM
+  - RULE-SET,microsoft,Microsoft
   - DOMAIN-KEYWORD,mcp,AI
 
   # 代理规则（IP）
-  - RULE-SET,google_ip,Google,no-resolve
   - RULE-SET,telegram_ip,Telegram,no-resolve
-  - RULE-SET,twitter_ip,Twitter,no-resolve
+  - RULE-SET,google_ip,Google,no-resolve
 
   # 兜底规则
   - RULE-SET,gfw,默认代理
