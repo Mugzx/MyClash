@@ -2,9 +2,7 @@
 
 ## 配置文件
 
-### 使用方法（配置）
-
-复制链接，导入代理客户端
+使用方法：复制链接，导入代理客户端
 
 ```txt
 https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
@@ -26,17 +24,15 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
 - `自动选择`
 - `负载均衡`
 - `AI`
-- `Media` （YouTube+TikTok+Instagram+Twitch+Spotify）
-- `FCM`
-- `Google`
+- `Media` （YouTube+TikTok+Twitch）
 - `GitHub`
-- `Microsoft`
-- `Apple`
 - `Telegram`
 - `Steam`
-- `Twitter`
+- `Google`
+- `FCM`
+- `Microsoft`
+- `国内直连`
 - `AdBlock`
-- `直连`
 - `漏网之鱼`
 
 ## 内置节点组

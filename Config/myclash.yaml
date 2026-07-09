@@ -207,7 +207,7 @@ rule-providers:
     path: './ruleset/microsoft.mrs'
     path-in-bundle: 'geo/geosite/microsoft.mrs'
 
-  # --- 国内/直连规则集 ---
+  # --- 国内直连规则集 ---
   adblockmihomolite:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomolite.mrs'
@@ -328,7 +328,7 @@ proxies_common:
           '默认代理',
           '自动选择',
           '负载均衡',
-          '直连',
+          '国内直连',
           '香港',
           '日本',
           '美国',
@@ -416,29 +416,20 @@ proxy-groups:
 
   - name: 'FCM'
     <<: [*group_common_select, *proxies_direct]
-    default-selected: '直连'
+    default-selected: '国内直连'
     icon: 'https://fastly.jsdelivr.net/gh/MiToverG422/Qure@master/IconSet/Color/fcm.png'
 
   - name: 'Microsoft'
     <<: [*group_common_select, *proxies_direct]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png'
 
-  - name: '直连'
+  # 定义地区策略组
+  - name: '国内直连'
     <<: *group_common_select
     proxies: ['🇨🇳 直连 | IPv4优先', '🇨🇳 直连 | IPv6优先', '🇨🇳 直连 | 双栈']
     url: 'https://connectivitycheck.platform.hicloud.com/generate_204'
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/China_Map.png'
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/China.png'
 
-  - name: 'AdBlock'
-    <<: [*group_common_select, *proxies_reject]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AdBlack.png'
-
-  - name: '漏网之鱼'
-    <<: *group_common_select
-    proxies: ['默认代理', '直连']
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Stack.png'
-
-  # 定义地区策略组
   - name: '香港'
     <<: [*group_common_select, *HK_filter]
     include-all: true
@@ -513,11 +504,21 @@ proxy-groups:
     <<: [*group_common_select, *exclude_filter]
     include-all: true
     proxies: ['其他节点-自动选择', '其他节点-负载均衡']
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/World_Map.png'
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Server.png'
   - name: '其他节点-自动选择'
     <<: [*group_common_auto, *exclude_filter]
   - name: '其他节点-负载均衡'
     <<: [*group_common_load, *exclude_filter]
+
+  # 定义特殊策略组
+  - name: 'AdBlock'
+    <<: [*group_common_select, *proxies_reject]
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AdBlack.png'
+
+  - name: '漏网之鱼'
+    <<: *group_common_select
+    proxies: ['默认代理', '国内直连']
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Puzzle.png'
 
 # --- 路由规则 (Rules) ---
 
@@ -526,15 +527,15 @@ rules:
   - AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,cn_additional),(RULE-SET,cn_ip,no-resolve)))))),REJECT
 
   # 私有网络直连
-  - RULE-SET,private,直连
-  - RULE-SET,private_ip,直连,no-resolve
+  - RULE-SET,private,国内直连
+  - RULE-SET,private_ip,国内直连,no-resolve
 
   # 国内直连
-  - RULE-SET,games_cn,直连 # 已包含 steam 下载域名
-  - RULE-SET,nvidia_cn,直连
-  - RULE-SET,microsoft_cn,直连
-  - DOMAIN,auroraoss.com,直连 # 避免 Aurora Store 无法匿名
-  - DOMAIN,international-gfe.download.nvidia.com,直连
+  - RULE-SET,games_cn,国内直连 # 已包含 steam 下载域名
+  - RULE-SET,nvidia_cn,国内直连
+  - RULE-SET,microsoft_cn,国内直连
+  - DOMAIN,auroraoss.com,国内直连 # 避免 Aurora Store 无法匿名
+  - DOMAIN,international-gfe.download.nvidia.com,国内直连
 
   # 广告拦截
   - RULE-SET,adblockmihomolite,AdBlock
@@ -558,6 +559,6 @@ rules:
 
   # 兜底规则
   - RULE-SET,gfw,默认代理
-  - RULE-SET,cn_additional,直连
-  - RULE-SET,cn_ip,直连
+  - RULE-SET,cn_additional,国内直连
+  - RULE-SET,cn_ip,国内直连
   - MATCH,漏网之鱼
