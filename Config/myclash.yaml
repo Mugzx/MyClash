@@ -16,7 +16,7 @@ proxy_providers_common:
 # 全局过滤节点
 global_exclude_filter:
   &global_exclude_filter {
-    exclude-filter: '群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|禁止|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|⚠️|@|Expire|http|com',
+    exclude-filter: '群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|禁止|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|重置|⚠️|@|Expire|http|com',
   }
 
 # 代理提供商，可配置多个
@@ -511,7 +511,7 @@ proxy-groups:
     <<: [*group_common_load, *exclude_filter]
 
   # 定义特殊策略组
-  - name: 'AdBlock'
+  - name: '广告拦截'
     <<: [*group_common_select, *proxies_reject]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AdBlack.png'
 
@@ -538,7 +538,7 @@ rules:
   - DOMAIN,international-gfe.download.nvidia.com,国内直连
 
   # 广告拦截
-  - RULE-SET,adblockmihomolite,AdBlock
+  - RULE-SET,adblockmihomolite,广告拦截
 
   # 代理规则（域名）
   - RULE-SET,ai,AI

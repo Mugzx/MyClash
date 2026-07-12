@@ -32,7 +32,7 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
 - `FCM`
 - `Microsoft`
 - `国内直连`
-- `AdBlock`
+- `广告拦截`
 - `漏网之鱼`
 
 ## 内置节点组
