@@ -151,6 +151,21 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-!cn.mrs'
     path: './ruleset/ai.mrs'
     path-in-bundle: 'geo/geosite/category-ai-!cn.mrs'
+  github:
+    <<: *rule_providers_domain
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs'
+    path: './ruleset/github.mrs'
+    path-in-bundle: 'geo/geosite/github.mrs'
+  google:
+    <<: *rule_providers_domain
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs'
+    path: './ruleset/google.mrs'
+    path-in-bundle: 'geo/geosite/google.mrs'
+  google_ip:
+    <<: *rule_providers_ip
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs'
+    path: './ruleset/google_ip.mrs'
+    path-in-bundle: 'geo/geoip/google.mrs'
   youtube:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.mrs'
@@ -166,11 +181,11 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/twitch.mrs'
     path: './ruleset/twitch.mrs'
     path-in-bundle: 'geo/geosite/twitch.mrs'
-  github:
+  steam:
     <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/github.mrs'
-    path: './ruleset/github.mrs'
-    path-in-bundle: 'geo/geosite/github.mrs'
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/steam.mrs'
+    path: './ruleset/steam.mrs'
+    path-in-bundle: 'geo/geosite/steam.mrs'
   telegram:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.mrs'
@@ -181,21 +196,6 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs'
     path: './ruleset/telegram_ip.mrs'
     path-in-bundle: 'geo/geoip/telegram.mrs'
-  steam:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/steam.mrs'
-    path: './ruleset/steam.mrs'
-    path-in-bundle: 'geo/geosite/steam.mrs'
-  google:
-    <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs'
-    path: './ruleset/google.mrs'
-    path-in-bundle: 'geo/geosite/google.mrs'
-  google_ip:
-    <<: *rule_providers_ip
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.mrs'
-    path: './ruleset/google_ip.mrs'
-    path-in-bundle: 'geo/geoip/google.mrs'
   googlefcm:
     <<: *rule_providers_domain
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/googlefcm.mrs'
@@ -393,26 +393,26 @@ proxy-groups:
     default-selected: '美国'
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png'
 
+  - name: 'GitHub'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png'
+
+  - name: 'Google'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png'
+
   - name: 'Media'
     default-selected: '日本'
     <<: [*group_common_select, *proxies_default]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Media.png'
 
-  - name: 'GitHub'
-    <<: [*group_common_select, *proxies_default]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png'
-
-  - name: 'Telegram'
-    <<: [*group_common_select, *proxies_default]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png'
-
   - name: 'Steam'
     <<: [*group_common_select, *proxies_direct]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Steam.png'
 
-  - name: 'Google'
+  - name: 'Telegram'
     <<: [*group_common_select, *proxies_default]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png'
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Telegram.png'
 
   - name: 'FCM'
     <<: [*group_common_select, *proxies_direct]
@@ -532,8 +532,8 @@ rules:
 
   # 国内直连
   - RULE-SET,games_cn,国内直连 # 已包含 steam 下载域名
-  - RULE-SET,nvidia_cn,国内直连
   - RULE-SET,microsoft_cn,国内直连
+  - RULE-SET,nvidia_cn,国内直连
   - DOMAIN,auroraoss.com,国内直连 # 避免 Aurora Store 无法匿名
   - DOMAIN,international-gfe.download.nvidia.com,国内直连
 
@@ -542,20 +542,20 @@ rules:
 
   # 代理规则（域名）
   - RULE-SET,ai,AI
+  - RULE-SET,github,GitHub
   - RULE-SET,youtube,Media
   - RULE-SET,tiktok,Media
   - RULE-SET,twitch,Media
-  - RULE-SET,github,GitHub
-  - RULE-SET,telegram,Telegram
   - RULE-SET,steam,Steam
-  - RULE-SET,google,Google
+  - RULE-SET,telegram,Telegram
   - RULE-SET,googlefcm,FCM
+  - RULE-SET,google,Google
   - RULE-SET,microsoft,Microsoft
   - DOMAIN-KEYWORD,mcp,AI
 
   # 代理规则（IP）
-  - RULE-SET,telegram_ip,Telegram,no-resolve
   - RULE-SET,google_ip,Google,no-resolve
+  - RULE-SET,telegram_ip,Telegram,no-resolve
 
   # 兜底规则
   - RULE-SET,gfw,默认代理

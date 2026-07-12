@@ -24,11 +24,11 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
 - `自动选择`
 - `负载均衡`
 - `AI`
-- `Media` （YouTube+TikTok+Twitch）
 - `GitHub`
-- `Telegram`
-- `Steam`
 - `Google`
+- `Media` （YouTube+TikTok+Twitch）
+- `Steam`
+- `Telegram`
 - `FCM`
 - `Microsoft`
 - `国内直连`
