@@ -25,7 +25,7 @@ proxy-providers:
     <<: [*proxy_providers_common, *global_exclude_filter]
     url: '' # 订阅链接
     age-secret-key: '' # Age加密
-    path: ./proxy_providers/provider1.yaml
+    path: ./proxy_provider/1.yaml
     override:
       additional-prefix: 'p1 | ' # 添加前缀
 
