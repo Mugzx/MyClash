@@ -31,7 +31,7 @@ https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
 - `Telegram`
 - `FCM`
 - `Microsoft`
-- `国内直连`
+- `本地直连`
 - `广告拦截`
 - `漏网之鱼`
 
