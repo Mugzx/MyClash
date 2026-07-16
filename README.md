@@ -5,7 +5,7 @@
 使用方法：复制链接，导入代理客户端
 
 ```txt
-https://raw.githubusercontent.com/Mugzx/MyClash/main/Config/myclash.yaml
+https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 ```
 
 ## 说明
