@@ -253,6 +253,11 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.mrs'
     path: './ruleset/telegram_ip.mrs'
     path-in-bundle: 'geo/geoip/telegram.mrs'
+  xbox:
+    <<: *rule_providers_domain
+    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/xbox.mrs'
+    path: './ruleset/xbox.mrs'
+    path-in-bundle: 'geo/geosite/xbox.mrs'
 
 # 分流策略组通用配置
 group_common:
@@ -373,9 +378,9 @@ proxy-groups:
         '台湾省',
         '低倍率节点',
         '高倍率节点',
+        '其他节点',
         '自动选择',
         '负载均衡',
-        '其他节点',
       ]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png'
 
@@ -396,6 +401,10 @@ proxy-groups:
     default-selected: '本地直连'
     icon: 'https://fastly.jsdelivr.net/gh/MiToverG422/Qure@master/IconSet/Color/fcm.png'
 
+  - name: 'Games'
+    <<: [*group_common_select, *proxies_direct]
+    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Game.png'
+
   - name: 'GitHub'
     <<: [*group_common_select, *proxies_default]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png'
@@ -411,10 +420,6 @@ proxy-groups:
   - name: 'Microsoft'
     <<: [*group_common_select, *proxies_direct]
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Microsoft.png'
-
-  - name: 'Steam'
-    <<: [*group_common_select, *proxies_direct]
-    icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Steam.png'
 
   - name: 'Telegram'
     <<: [*group_common_select, *proxies_default]
@@ -540,13 +545,14 @@ rules:
   # 代理规则（域名）
   - RULE-SET,ai,AI
   - RULE-SET,googlefcm,FCM
+  - RULE-SET,steam,Games
+  - RULE-SET,xbox,Games
   - RULE-SET,github,GitHub
   - RULE-SET,google,Google
   - RULE-SET,youtube,Media
   - RULE-SET,tiktok,Media
   - RULE-SET,twitch,Media
   - RULE-SET,microsoft,Microsoft
-  - RULE-SET,steam,Steam
   - RULE-SET,telegram,Telegram
   - DOMAIN-KEYWORD,mcp,AI
 

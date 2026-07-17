@@ -24,12 +24,12 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 - `自动选择`
 - `负载均衡`
 - `AI`
+- `FCM`
+- `Games` (Steam+Xbox)
 - `GitHub`
 - `Google`
-- `Media` （YouTube+TikTok+Twitch）
-- `Steam`
+- `Media` (YouTube+TikTok+Twitch)
 - `Telegram`
-- `FCM`
 - `Microsoft`
 - `本地直连`
 - `广告拦截`
@@ -37,7 +37,7 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 
 ## 内置节点组
 
-> - _所有组均为手动选择（select），内部包含对应的自动选择策略组和负载均衡策略组_
+> - _所有组均为手动选择 (select)，内部包含对应的自动选择策略组和负载均衡策略组_
 > - _未匹配到地区组的节点节点将归类至 「其他节点」_
 
 - `香港`
