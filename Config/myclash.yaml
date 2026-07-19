@@ -186,10 +186,10 @@ rule-providers:
     path-in-bundle: 'geo/geoip/cn.mrs'
 
   # 广告规则集
-  adblockmihomolite:
+  adblockmihomo:
     <<: *rule_providers_domain
-    url: 'https://fastly.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomolite.mrs'
-    path: './ruleset/adblockmihomolite.mrs'
+    url: 'https://fastly.jsdelivr.net/gh/217heidai/adblockfilters@main/rules/adblockmihomo.mrs'
+    path: './ruleset/adblockmihomo.mrs'
     path-in-bundle: 'geo/geosite/category-ads-all.mrs'
 
   # 海外规则集
@@ -540,7 +540,7 @@ rules:
   - DOMAIN,international-gfe.download.nvidia.com,本地直连
 
   # 广告拦截
-  - RULE-SET,adblockmihomolite,广告拦截
+  - RULE-SET,adblockmihomo,广告拦截
 
   # 代理规则（域名）
   - RULE-SET,ai,AI
@@ -548,10 +548,10 @@ rules:
   - RULE-SET,steam,Games
   - RULE-SET,xbox,Games
   - RULE-SET,github,GitHub
-  - RULE-SET,google,Google
   - RULE-SET,youtube,Media
   - RULE-SET,tiktok,Media
   - RULE-SET,twitch,Media
+  - RULE-SET,google,Google
   - RULE-SET,microsoft,Microsoft
   - RULE-SET,telegram,Telegram
   - DOMAIN-KEYWORD,mcp,AI
