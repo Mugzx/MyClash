@@ -58,8 +58,8 @@ profile:
 # 国内外 DNS 定义
 chinaDNS:
   &chinaDNS [
-    'https://dns.alidns.com/dns-query#DIRECT',
-    'https://doh.pub/dns-query#DIRECT',
+    'https://dns.alidns.com/dns-query',
+    'https://doh.pub/dns-query',
   ]
 foreignDNS:
   &foreignDNS [
