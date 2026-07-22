@@ -57,10 +57,7 @@ profile:
 
 # 国内外 DNS 定义
 chinaDNS:
-  &chinaDNS [
-    'https://dns.alidns.com/dns-query',
-    'https://doh.pub/dns-query',
-  ]
+  &chinaDNS ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
 foreignDNS:
   &foreignDNS [
     'https://dns.cloudflare.com/dns-query#默认代理',
