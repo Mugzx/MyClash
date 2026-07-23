@@ -31,10 +31,9 @@ proxy-providers:
 
 # 自定义节点配置
 proxies:
-  # 直连
+  - { name: 'DIRECT-ALL', type: direct }
   - { name: 'DIRECT-IPv4-PREF', type: direct, ip-version: ipv4-prefer }
   - { name: 'DIRECT-IPv6-PREF', type: direct, ip-version: ipv6-prefer }
-  - { name: 'DIRECT-ALL', type: direct }
 
 # 基础全局配置
 allow-lan: true
@@ -506,7 +505,7 @@ proxy-groups:
   # 特殊策略组
   - name: '本地直连'
     <<: *group_common_select
-    proxies: ['DIRECT-IPv4-PREF', 'DIRECT-IPv6-PREF', 'DIRECT-ALL']
+    proxies: ['DIRECT-ALL', 'DIRECT-IPv4-PREF', 'DIRECT-IPv6-PREF']
     url: 'https://connectivitycheck.platform.hicloud.com/generate_204'
     icon: 'https://fastly.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Direct.png'
 
