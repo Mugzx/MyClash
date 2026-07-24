@@ -3,7 +3,7 @@ proxy_providers_common:
   &proxy_providers_common {
     type: http,
     interval: 86400,
-    proxy: DIRECT,
+    proxy: 漏网之鱼,
     health-check:
       {
         enable: true,
