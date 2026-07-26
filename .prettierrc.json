@@ -1,23 +1,7 @@
 {
-  "semi": true,
   "tabWidth": 2,
   "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 120,
-  "useTabs": false,
-  "bracketSpacing": true,
-  "arrowParens": "always",
+  "printWidth": 80, 
   "proseWrap": "preserve",
-  "endOfLine": "lf",
-  "overrides": [
-    {
-      "files": [
-        "*.yml",
-        "*.yaml"
-      ],
-      "options": {
-        "printWidth": 80
-      }
-    }
-  ]
+  "endOfLine": "lf"
 }
