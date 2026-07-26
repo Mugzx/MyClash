@@ -526,10 +526,7 @@ proxy-groups:
 
 # 路由分流规则
 rules:
-  # 禁用国外 QUIC 流量
-  - AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,cn_additional),(RULE-SET,cn_ip,no-resolve)))))),REJECT
-
-  # 私有网络直连
+  # 内网直连
   - RULE-SET,private,本地直连
   - RULE-SET,private_ip,本地直连,no-resolve
 
@@ -539,6 +536,9 @@ rules:
   - RULE-SET,nvidia_cn,本地直连
   - DOMAIN,auroraoss.com,本地直连 # 避免 Aurora Store 无法匿名
   - DOMAIN,international-gfe.download.nvidia.com,本地直连
+
+  # 禁用国外 QUIC 流量
+  - AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,cn_additional),(RULE-SET,cn_ip,no-resolve)))))),REJECT
 
   # 广告拦截
   - RULE-SET,adblockmihomo,广告拦截
