@@ -21,6 +21,7 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 ## 内置策略组
 
 - `默认代理`
+- `手动选择`
 - `自动选择`
 - `负载均衡`
 - `AI`
@@ -29,8 +30,9 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 - `GitHub`
 - `Google`
 - `Media` (YouTube+TikTok+Twitch)
-- `Telegram`
 - `Microsoft`
+- `Telegram`
+- `X`
 - `本地直连`
 - `广告拦截`
 - `漏网之鱼`

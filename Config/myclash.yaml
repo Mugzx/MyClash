@@ -249,6 +249,16 @@ rule-providers:
     url: 'https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geoip/telegram.mrs'
     path: './ruleset/telegram_ip.mrs'
     path-in-bundle: 'geo/geoip/telegram.mrs'
+  x:
+    <<: *rule_providers_domain
+    url: 'https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/twitter.mrs'
+    path: './ruleset/x.mrs'
+    path-in-bundle: 'geo/geosite/twitter.mrs'
+  x_ip:
+    <<: *rule_providers_ip
+    url: 'https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geoip/twitter.mrs'
+    path: './ruleset/x_ip.mrs'
+    path-in-bundle: 'geo/geoip/twitter.mrs'
   xbox:
     <<: *rule_providers_domain
     url: 'https://github.com/MetaCubeX/meta-rules-dat/raw/meta/geo/geosite/xbox.mrs'
@@ -362,6 +372,12 @@ proxy-groups:
       ]
     icon: 'https://github.com/Koolson/Qure/raw/master/IconSet/Color/Proxy.png'
 
+  - name: '手动选择'
+    <<: *group_common_select
+    include-all: true
+    exclude-type: 'DIRECT'
+    icon: 'https://github.com/Koolson/Qure/raw/master/IconSet/Color/Static.png'
+
   - name: '自动选择'
     <<: *group_common_auto
 
@@ -402,6 +418,10 @@ proxy-groups:
   - name: 'Telegram'
     <<: [*group_common_select, *proxies_default]
     icon: 'https://github.com/Koolson/Qure/raw/master/IconSet/Color/Telegram.png'
+
+  - name: 'X'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://github.com/Koolson/Qure/raw/master/IconSet/Color/X.png'
 
   # 地区策略组
   - name: '香港'
@@ -498,7 +518,7 @@ proxy-groups:
 
   - name: '漏网之鱼'
     <<: *group_common_select
-    proxies: ['默认代理', '本地直连']
+    proxies: ['默认代理', '手动选择', '本地直连']
     icon: 'https://github.com/Koolson/Qure/raw/master/IconSet/Color/Puzzle.png'
 
 # 路由分流规则
@@ -532,11 +552,13 @@ rules:
   - RULE-SET,google,Google
   - RULE-SET,microsoft,Microsoft
   - RULE-SET,telegram,Telegram
+  - RULE-SET,x,X
   - DOMAIN-KEYWORD,mcp,AI
 
   # 代理规则（IP）
   - RULE-SET,google_ip,Google,no-resolve
   - RULE-SET,telegram_ip,Telegram,no-resolve
+  - RULE-SET,x_ip,X,no-resolve
 
   # 兜底规则
   - RULE-SET,gfw,默认代理
