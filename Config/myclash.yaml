@@ -36,11 +36,13 @@ proxies:
   - { name: 'DIRECT-IPv6-PREF', type: direct, ip-version: ipv6-prefer }
 
 # 基础全局配置
+mixed-port: 7890
 allow-lan: true
 ipv6: true
 mode: rule
 log-level: warning
 bind-address: '*'
+etag-support: true
 unified-delay: true
 tcp-concurrent: true
 keep-alive-idle: 600
@@ -77,7 +79,7 @@ dns:
   nameserver: *foreignDNS
   nameserver-policy:
     'rule-set:cn': *chinaDNS
-  direct-nameserver: ['system', '223.5.5.5', '119.29.29.29']
+  direct-nameserver: ['223.5.5.5', '119.29.29.29']
 
 hosts:
   'dns.alidns.com': ['223.5.5.5', '223.6.6.6']
@@ -155,6 +157,11 @@ rule-providers:
     url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games@cn.mrs'
     path: './ruleset/category-games@cn.mrs'
     path-in-bundle: 'geo/geosite/category-games@cn.mrs'
+  geolocation-cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-cn.mrs'
+    path: './ruleset/geolocation-cn.mrs'
+    path-in-bundle: 'geo/geosite/geolocation-cn.mrs'
   microsoft_cn:
     <<: *rule_providers_domain
     url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft@cn.mrs'
@@ -562,6 +569,6 @@ rules:
 
   # 兜底规则
   - RULE-SET,gfw,默认代理
-  - RULE-SET,cn_additional,本地直连
+  - RULE-SET,geolocation-cn,本地直连
   - RULE-SET,cn_ip,本地直连
   - MATCH,漏网之鱼
