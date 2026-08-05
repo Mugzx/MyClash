@@ -380,12 +380,6 @@ proxy-groups:
       ]
     icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png'
 
-  - name: '手动选择'
-    <<: *group_common_select
-    include-all: true
-    exclude-type: 'DIRECT'
-    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Static.png'
-
   - name: '自动选择'
     <<: *group_common_auto
 
@@ -513,6 +507,12 @@ proxy-groups:
     <<: [*group_common_load, *exclude_filter]
 
   # 特殊策略组
+  - name: '手动选择'
+    <<: *group_common_select
+    include-all: true
+    exclude-type: 'DIRECT'
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Static.png'
+
   - name: '本地直连'
     <<: *group_common_select
     proxies: ['DIRECT-ALL', 'DIRECT-IPv4-PREF', 'DIRECT-IPv6-PREF']
