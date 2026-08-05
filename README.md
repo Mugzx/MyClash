@@ -24,7 +24,6 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 ## 内置策略组
 
 - `默认代理`
-- `手动选择`
 - `自动选择`
 - `负载均衡`
 - `AI`
@@ -36,6 +35,7 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 - `Microsoft`
 - `Telegram`
 - `X`
+- `手动选择`
 - `本地直连`
 - `广告拦截`
 - `漏网之鱼`
@@ -58,7 +58,6 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 
 感谢以下项目以及所有上游项目
 
-- [dahaha-365/YaNet](https://github.com/dahaha-365/YaNet/blob/main/Mihomo/global_script.js)
 - [YiXuanZX/rules](https://github.com/YiXuanZX/rules)
 - [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)
 - [wwqgtxx/clash-rules](https://github.com/wwqgtxx/clash-rules)
