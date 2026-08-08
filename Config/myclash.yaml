@@ -4,13 +4,7 @@ proxy_providers_common:
     type: http,
     interval: 86400,
     proxy: 漏网之鱼,
-    health-check:
-      {
-        enable: true,
-        url: https://g.cn/generate_204,
-        interval: 600,
-        lazy: true,
-      },
+    health-check: { enable: true, url: https://www.gstatic.com/generate_204, interval: 600, lazy: true },
   }
 
 # 全局过滤节点
@@ -36,38 +30,22 @@ proxies:
   - { name: 'DIRECT-IPv6-PREF', type: direct, ip-version: ipv6-prefer }
 
 # 基础全局配置
-mixed-port: 7890
-allow-lan: true
-ipv6: true
-mode: rule
-log-level: warning
-bind-address: '*'
-etag-support: true
+log-level: silent
 unified-delay: true
 tcp-concurrent: true
-keep-alive-idle: 600
-keep-alive-interval: 60
 find-process-mode: strict
-external-controller: '127.0.0.1:9090'
-external-ui: ui
-external-ui-url: 'https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip'
+external-ui-url: 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
 
 profile:
   store-selected: true
   store-fake-ip: true
 
 # 国内外 DNS 定义
-chinaDNS:
-  &chinaDNS ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
-foreignDNS:
-  &foreignDNS [
-    'https://dns.cloudflare.com/dns-query#默认代理',
-    'https://dns.google/dns-query#默认代理',
-  ]
+chinaDNS: &chinaDNS ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+foreignDNS: &foreignDNS ['https://dns.cloudflare.com/dns-query#默认代理', 'https://dns.google/dns-query#默认代理']
 
 dns:
   enable: true
-  ipv6: true
   use-hosts: true
   cache-algorithm: arc
   use-system-hosts: true
@@ -97,7 +75,7 @@ hosts:
 
 ntp:
   enable: true
-  write-to-system: false
+  write-to-system: true
   server: 'ntp.aliyun.com'
   port: 123
   interval: 60
@@ -113,20 +91,8 @@ tun:
 
 # 分流规则集通用配置
 rule_providers_common:
-  rule_providers_domain:
-    &rule_providers_domain {
-      type: http,
-      format: mrs,
-      interval: 86400,
-      behavior: domain,
-    }
-  rule_providers_ip:
-    &rule_providers_ip {
-      type: http,
-      format: mrs,
-      interval: 86400,
-      behavior: ipcidr,
-    }
+  rule_providers_domain: &rule_providers_domain { type: http, format: mrs, interval: 86400, behavior: domain }
+  rule_providers_ip: &rule_providers_ip { type: http, format: mrs, interval: 86400, behavior: ipcidr }
 
 # 定义分流规则集
 rule-providers:
@@ -282,7 +248,7 @@ group_common:
       timeout: 3000,
       max-failed-times: 3,
       empty-fallback: REJECT,
-      url: 'https://g.cn/generate_204',
+      url: 'https://www.gstatic.com/generate_204',
       lazy: true,
     }
 
@@ -293,7 +259,7 @@ group_common:
       timeout: 3000,
       max-failed-times: 3,
       empty-fallback: REJECT,
-      url: 'https://g.cn/generate_204',
+      url: 'https://www.gstatic.com/generate_204',
       lazy: true,
       tolerance: 50,
       include-all: true,
@@ -309,7 +275,7 @@ group_common:
       timeout: 3000,
       max-failed-times: 3,
       empty-fallback: REJECT,
-      url: 'https://g.cn/generate_204',
+      url: 'https://www.gstatic.com/generate_204',
       lazy: true,
       strategy: 'sticky-sessions',
       include-all: true,
@@ -341,22 +307,19 @@ proxies_common:
 
 # 定义地区过滤器正则表达式
 group_filter:
-  HK_filter: &HK_filter { filter: '🇭🇰|港|HK|[Hh]ong\s*[Kk]ong' }
-  JP_filter: &JP_filter { filter: '🇯🇵|日本|JP|[Jj]apan' }
-  US_filter: &US_filter { filter: '🇺🇸|美|US|[Aa]merica|[Uu]nited\s*[Ss]tates' }
-  SG_filter: &SG_filter { filter: '🇸🇬|新加坡|狮城|SG|[Ss]ingapore' }
-  TW_filter: &TW_filter { filter: '🇹🇼|台湾|TW|[Tt]aiwan' }
-  low_filter:
-    &low_filter {
-      filter: '^(?!.*(?:剩|期|客户端|软件)).*(?:(?<!\d)0\.[0-9]|下载|低倍)',
-    }
+  HK_filter: &HK_filter { filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong)' }
+  JP_filter: &JP_filter { filter: '(?i)(🇯🇵|日本|(?<![A-Za-z])JPN?(?![A-Za-z])|japan)' }
+  US_filter: &US_filter { filter: '(?i)(🇺🇸|美国|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)' }
+  SG_filter: &SG_filter { filter: '(?i)(🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore)' }
+  TW_filter: &TW_filter { filter: '(?i)(🇹🇼|台湾|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)' }
+  low_filter: &low_filter { filter: '^(?!.*(?:剩|期|客户端|软件)).*(?:(?<!\d)0\.[0-9]|下载|低倍)' }
   high_filter:
     &high_filter {
       filter: '(?u)(?:[*×xX✕✖⨉]\s*(?:(?:[2-9]\d*|[1-9]\d+)(?:\.\d+)?|1\.\d+))|(?:(?<![\d.])(?:(?:[2-9]\d*|[1-9]\d+)(?:\.\d+)?|1\.\d+)\s*(?:倍|[*×xX✕✖⨉]))',
     }
   exclude_filter:
     &exclude_filter {
-      exclude-filter: '港|HK|🇭🇰|日本|JP|🇯🇵|美|US|🇺🇸|新加坡|SG|🇸🇬|台湾|TW|🇹🇼',
+      exclude-filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong|🇯🇵|日本|(?<![A-Za-z])JPN?(?![A-Za-z])|japan|🇺🇸|美国|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states|🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore|🇹🇼|台湾|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)',
       exclude-type: 'DIRECT',
     }
 
@@ -366,18 +329,7 @@ proxy-groups:
   - name: '默认代理'
     <<: *group_common_select
     proxies:
-      [
-        '香港',
-        '日本',
-        '美国',
-        '新加坡',
-        '台湾省',
-        '低倍率节点',
-        '高倍率节点',
-        '其他节点',
-        '自动选择',
-        '负载均衡',
-      ]
+      ['香港', '日本', '美国', '新加坡', '台湾省', '低倍率节点', '高倍率节点', '其他节点', '自动选择', '负载均衡']
     icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png'
 
   - name: '自动选择'
