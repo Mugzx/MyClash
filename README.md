@@ -8,17 +8,21 @@
 https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 ```
 
-## 说明
+### 备注
 
 > [!WARNING]
 > - DNS配置和路由规则是配套的，非必要不要破坏正常分流
 > - 规则为 `rule-set` 模式，使用 `domain` 与 `ipcidr` 格式，不引用 Geodata（避免臃肿）
 > - 一些较为复杂的网络情况下，`geolocation-cn` 可能分流不完全，可以改用 `cn_additional`
 
+「IPv6」：在 [4f29c75](https://github.com/Mugzx/MyClash/commit/4f29c75) 里去掉了相关的开启字段（应该根据情况手动开启）。
+
+## 介绍
+
 - 自动排除非国家或地区的信息节点
 - 自动识别节点倍率，并分别归类为独立节点组：
-  - 高倍率节点（倍率 ≥2）
-  - 低倍率节点（倍率 ≤0.5）
+  - 高倍率节点（倍率 >1）
+  - 低倍率节点（倍率 ≤0.9）
 - 无该地区节点的策略组将回退到 REJECT
 
 ## 内置策略组

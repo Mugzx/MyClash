@@ -4,13 +4,13 @@ proxy_providers_common:
     type: http,
     interval: 86400,
     proxy: 漏网之鱼,
-    health-check: { enable: true, url: https://www.gstatic.com/generate_204, interval: 600, lazy: true },
+    health-check: { enable: true, url: https://connectivitycheck.gstatic.com/generate_204, interval: 600, lazy: true },
   }
 
 # 全局过滤节点
 global_exclude_filter:
   &global_exclude_filter {
-    exclude-filter: '(?i)(群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|重置|以下|⚠️|@|expire|http|com|traffic)',
+    exclude-filter: '(?i)(群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|禁止|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|重置|以下|⚠️|@|\bexpire\b|\bhttps?:\/\/|\.com|\btraffic\b)',
   }
 
 # 定义节点代理集，可配置多个订阅
@@ -25,7 +25,7 @@ proxy-providers:
 
 # 自定义节点配置
 proxies:
-  - { name: 'DIRECT-ALL', type: direct }
+  - { name: 'DIRECT-DUAL', type: direct }
   - { name: 'DIRECT-IPv4-PREF', type: direct, ip-version: ipv4-prefer }
   - { name: 'DIRECT-IPv6-PREF', type: direct, ip-version: ipv6-prefer }
 
@@ -51,6 +51,7 @@ dns:
   use-system-hosts: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: fdfe:dcba:9876::1/64
   fake-ip-filter: ['rule-set:private', 'rule-set:fakeip_filter']
   proxy-server-nameserver: *chinaDNS
   default-nameserver: ['223.5.5.5', '119.29.29.29']
@@ -248,7 +249,7 @@ group_common:
       timeout: 3000,
       max-failed-times: 3,
       empty-fallback: REJECT,
-      url: 'https://www.gstatic.com/generate_204',
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
       lazy: true,
     }
 
@@ -259,7 +260,7 @@ group_common:
       timeout: 3000,
       max-failed-times: 3,
       empty-fallback: REJECT,
-      url: 'https://www.gstatic.com/generate_204',
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
       lazy: true,
       tolerance: 50,
       include-all: true,
@@ -275,7 +276,7 @@ group_common:
       timeout: 3000,
       max-failed-times: 3,
       empty-fallback: REJECT,
-      url: 'https://www.gstatic.com/generate_204',
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
       lazy: true,
       strategy: 'sticky-sessions',
       include-all: true,
@@ -467,7 +468,7 @@ proxy-groups:
 
   - name: '本地直连'
     <<: *group_common_select
-    proxies: ['DIRECT-ALL', 'DIRECT-IPv4-PREF', 'DIRECT-IPv6-PREF']
+    proxies: ['DIRECT-DUAL', 'DIRECT-IPv4-PREF', 'DIRECT-IPv6-PREF']
     url: 'https://connectivitycheck.platform.hicloud.com/generate_204'
     icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png'
 
