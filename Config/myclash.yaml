@@ -4,7 +4,8 @@ proxy_providers_common:
     type: http,
     interval: 86400,
     proxy: 漏网之鱼,
-    health-check: { enable: true, url: https://connectivitycheck.gstatic.com/generate_204, interval: 600, lazy: true },
+    exclude-type: 'direct|reject|rematch',
+    health-check: { enable: true, url: https://connectivitycheck.gstatic.com/generate_204, interval: 600 },
   }
 
 # 全局过滤节点
@@ -13,7 +14,7 @@ global_exclude_filter:
     exclude-filter: '(?i)(群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|访问|支持|教程|关注|更新|作者|加入|超时|收藏|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|禁止|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|重置|以下|⚠️|@|\bexpire\b|\bhttps?:\/\/|\.com|\btraffic\b)',
   }
 
-# 定义节点代理集，可配置多个订阅
+# 定义代理集，可配置多个订阅
 proxy-providers:
   provider1:
     <<: [*proxy_providers_common, *global_exclude_filter]
@@ -90,157 +91,7 @@ tun:
   auto-detect-interface: true
   dns-hijack: ['any:53', 'tcp://any:53']
 
-# 分流规则集通用配置
-rule_providers_common:
-  rule_providers_domain: &rule_providers_domain { type: http, format: mrs, interval: 86400, behavior: domain }
-  rule_providers_ip: &rule_providers_ip { type: http, format: mrs, interval: 86400, behavior: ipcidr }
-
-# 定义分流规则集
-rule-providers:
-  # 基础规则集
-  fakeip_filter:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/fakeip-filter.mrs'
-    path: './ruleset/fakeip-filter.mrs'
-    path-in-bundle: 'geo/geosite/private.mrs'
-  gfw:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs'
-    path: './ruleset/gfw.mrs'
-    path-in-bundle: 'geo/geosite/gfw.mrs'
-
-  # 直连规则集
-  private:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs'
-    path: './ruleset/private.mrs'
-    path-in-bundle: 'geo/geosite/private.mrs'
-  private_ip:
-    <<: *rule_providers_ip
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs'
-    path: './ruleset/private_ip.mrs'
-    path-in-bundle: 'geo/geoip/private.mrs'
-  games_cn:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games@cn.mrs'
-    path: './ruleset/category-games@cn.mrs'
-    path-in-bundle: 'geo/geosite/category-games@cn.mrs'
-  geolocation-cn:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-cn.mrs'
-    path: './ruleset/geolocation-cn.mrs'
-    path-in-bundle: 'geo/geosite/geolocation-cn.mrs'
-  microsoft_cn:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft@cn.mrs'
-    path: './ruleset/microsoft@cn.mrs'
-    path-in-bundle: 'geo/geosite/microsoft@cn.mrs'
-  nvidia_cn:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nvidia@cn.mrs'
-    path: './ruleset/nvidia@cn.mrs'
-    path-in-bundle: 'geo/geosite/nvidia@cn.mrs'
-  cn_additional:
-    <<: *rule_providers_domain
-    url: 'https://static-file-global.353355.xyz/rules/cn-additional-list.mrs'
-    path: './ruleset/cn-additional-list.mrs'
-    path-in-bundle: 'geo/geosite/cn.mrs'
-  cn:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/direct.mrs'
-    path: './ruleset/cn.mrs'
-    path-in-bundle: 'geo/geosite/cn.mrs'
-  cn_ip:
-    <<: *rule_providers_ip
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs'
-    path: './ruleset/cn_ip.mrs'
-    path-in-bundle: 'geo/geoip/cn.mrs'
-
-  # 广告规则集
-  adblockmihomo:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs'
-    path: './ruleset/adblockmihomo.mrs'
-    path-in-bundle: 'geo/geosite/category-ads-all.mrs'
-
-  # 海外规则集
-  ai:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs'
-    path: './ruleset/ai.mrs'
-    path-in-bundle: 'geo/geosite/category-ai-!cn.mrs'
-  googlefcm:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/googlefcm.mrs'
-    path: './ruleset/googlefcm.mrs'
-    path-in-bundle: 'geo/geosite/googlefcm.mrs'
-  github:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs'
-    path: './ruleset/github.mrs'
-    path-in-bundle: 'geo/geosite/github.mrs'
-  google:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs'
-    path: './ruleset/google.mrs'
-    path-in-bundle: 'geo/geosite/google.mrs'
-  google_ip:
-    <<: *rule_providers_ip
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs'
-    path: './ruleset/google_ip.mrs'
-    path-in-bundle: 'geo/geoip/google.mrs'
-  youtube:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs'
-    path: './ruleset/youtube.mrs'
-    path-in-bundle: 'geo/geosite/youtube.mrs'
-  tiktok:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs'
-    path: './ruleset/tiktok.mrs'
-    path-in-bundle: 'geo/geosite/tiktok.mrs'
-  twitch:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitch.mrs'
-    path: './ruleset/twitch.mrs'
-    path-in-bundle: 'geo/geosite/twitch.mrs'
-  microsoft:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs'
-    path: './ruleset/microsoft.mrs'
-    path-in-bundle: 'geo/geosite/microsoft.mrs'
-  steam:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs'
-    path: './ruleset/steam.mrs'
-    path-in-bundle: 'geo/geosite/steam.mrs'
-  telegram:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs'
-    path: './ruleset/telegram.mrs'
-    path-in-bundle: 'geo/geosite/telegram.mrs'
-  telegram_ip:
-    <<: *rule_providers_ip
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs'
-    path: './ruleset/telegram_ip.mrs'
-    path-in-bundle: 'geo/geoip/telegram.mrs'
-  x:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs'
-    path: './ruleset/x.mrs'
-    path-in-bundle: 'geo/geosite/twitter.mrs'
-  x_ip:
-    <<: *rule_providers_ip
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs'
-    path: './ruleset/x_ip.mrs'
-    path-in-bundle: 'geo/geoip/twitter.mrs'
-  xbox:
-    <<: *rule_providers_domain
-    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xbox.mrs'
-    path: './ruleset/xbox.mrs'
-    path-in-bundle: 'geo/geosite/xbox.mrs'
-
-# 分流策略组通用配置
+# 策略组通用配置
 group_common:
   group_common_select:
     &group_common_select {
@@ -250,7 +101,6 @@ group_common:
       max-failed-times: 3,
       empty-fallback: REJECT,
       url: 'https://connectivitycheck.gstatic.com/generate_204',
-      lazy: true,
     }
 
   group_common_auto:
@@ -261,7 +111,6 @@ group_common:
       max-failed-times: 3,
       empty-fallback: REJECT,
       url: 'https://connectivitycheck.gstatic.com/generate_204',
-      lazy: true,
       tolerance: 50,
       include-all: true,
       exclude-type: 'DIRECT',
@@ -277,7 +126,6 @@ group_common:
       max-failed-times: 3,
       empty-fallback: REJECT,
       url: 'https://connectivitycheck.gstatic.com/generate_204',
-      lazy: true,
       strategy: 'sticky-sessions',
       include-all: true,
       exclude-type: 'DIRECT',
@@ -285,7 +133,7 @@ group_common:
       hidden: true,
     }
 
-# 通用代理节点组
+# 通用代理组
 proxies_common:
   proxies_default:
     &proxies_default {
@@ -306,13 +154,13 @@ proxies_common:
         ],
     }
 
-# 定义地区过滤器正则表达式
+# 定义地区正则过滤
 group_filter:
   HK_filter: &HK_filter { filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong)' }
-  JP_filter: &JP_filter { filter: '(?i)(🇯🇵|日本|(?<![A-Za-z])JPN?(?![A-Za-z])|japan)' }
-  US_filter: &US_filter { filter: '(?i)(🇺🇸|美国|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)' }
+  JP_filter: &JP_filter { filter: '(?i)(🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan)' }
+  US_filter: &US_filter { filter: '(?i)(🇺🇸|美国|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|圣地亚哥|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)' }
   SG_filter: &SG_filter { filter: '(?i)(🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore)' }
-  TW_filter: &TW_filter { filter: '(?i)(🇹🇼|台湾|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)' }
+  TW_filter: &TW_filter { filter: '(?i)(🇹🇼|台湾|台北|高雄|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)' }
   low_filter: &low_filter { filter: '^(?!.*(?:剩|期|客户端|软件)).*(?:(?<!\d)0\.[0-9]|下载|低倍)' }
   high_filter:
     &high_filter {
@@ -320,11 +168,11 @@ group_filter:
     }
   exclude_filter:
     &exclude_filter {
-      exclude-filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong|🇯🇵|日本|(?<![A-Za-z])JPN?(?![A-Za-z])|japan|🇺🇸|美国|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states|🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore|🇹🇼|台湾|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)',
-      exclude-type: 'DIRECT',
+      exclude-filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong|🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan|🇺🇸|美国|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|圣地亚哥|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states|🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore|🇹🇼|台湾|台北|高雄|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)',
+      exclude-type: 'direct',
     }
 
-# 定义分流策略组
+# 定义策略组
 proxy-groups:
   # 通用策略组
   - name: '默认代理'
@@ -482,7 +330,157 @@ proxy-groups:
     proxies: ['默认代理', '手动选择', '本地直连']
     icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Puzzle.png'
 
-# 路由分流规则
+# 规则集通用配置
+rule_providers_common:
+  rule_providers_domain: &rule_providers_domain { type: http, format: mrs, interval: 86400, behavior: domain }
+  rule_providers_ip: &rule_providers_ip { type: http, format: mrs, interval: 86400, behavior: ipcidr }
+
+# 定义规则集
+rule-providers:
+  # 基础规则集
+  fakeip_filter:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/fakeip-filter.mrs'
+    path: './ruleset/fakeip-filter.mrs'
+    path-in-bundle: 'geo/geosite/private.mrs'
+  gfw:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs'
+    path: './ruleset/gfw.mrs'
+    path-in-bundle: 'geo/geosite/gfw.mrs'
+
+  # 直连规则集
+  private:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs'
+    path: './ruleset/private.mrs'
+    path-in-bundle: 'geo/geosite/private.mrs'
+  private_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/private.mrs'
+    path: './ruleset/private_ip.mrs'
+    path-in-bundle: 'geo/geoip/private.mrs'
+  games_cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-games@cn.mrs'
+    path: './ruleset/category-games@cn.mrs'
+    path-in-bundle: 'geo/geosite/category-games@cn.mrs'
+  geolocation-cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-cn.mrs'
+    path: './ruleset/geolocation-cn.mrs'
+    path-in-bundle: 'geo/geosite/geolocation-cn.mrs'
+  microsoft_cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft@cn.mrs'
+    path: './ruleset/microsoft@cn.mrs'
+    path-in-bundle: 'geo/geosite/microsoft@cn.mrs'
+  nvidia_cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/nvidia@cn.mrs'
+    path: './ruleset/nvidia@cn.mrs'
+    path-in-bundle: 'geo/geosite/nvidia@cn.mrs'
+  cn_additional:
+    <<: *rule_providers_domain
+    url: 'https://static-file-global.353355.xyz/rules/cn-additional-list.mrs'
+    path: './ruleset/cn-additional-list.mrs'
+    path-in-bundle: 'geo/geosite/cn.mrs'
+  cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/wwqgtxx/clash-rules/release/direct.mrs'
+    path: './ruleset/cn.mrs'
+    path-in-bundle: 'geo/geosite/cn.mrs'
+  cn_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs'
+    path: './ruleset/cn_ip.mrs'
+    path-in-bundle: 'geo/geoip/cn.mrs'
+
+  # 广告规则集
+  adblockmihomo:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs'
+    path: './ruleset/adblockmihomo.mrs'
+    path-in-bundle: 'geo/geosite/category-ads-all.mrs'
+
+  # 海外规则集
+  ai:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs'
+    path: './ruleset/ai.mrs'
+    path-in-bundle: 'geo/geosite/category-ai-!cn.mrs'
+  googlefcm:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/googlefcm.mrs'
+    path: './ruleset/googlefcm.mrs'
+    path-in-bundle: 'geo/geosite/googlefcm.mrs'
+  github:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs'
+    path: './ruleset/github.mrs'
+    path-in-bundle: 'geo/geosite/github.mrs'
+  google:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs'
+    path: './ruleset/google.mrs'
+    path-in-bundle: 'geo/geosite/google.mrs'
+  google_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs'
+    path: './ruleset/google_ip.mrs'
+    path-in-bundle: 'geo/geoip/google.mrs'
+  youtube:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs'
+    path: './ruleset/youtube.mrs'
+    path-in-bundle: 'geo/geosite/youtube.mrs'
+  tiktok:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs'
+    path: './ruleset/tiktok.mrs'
+    path-in-bundle: 'geo/geosite/tiktok.mrs'
+  twitch:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitch.mrs'
+    path: './ruleset/twitch.mrs'
+    path-in-bundle: 'geo/geosite/twitch.mrs'
+  microsoft:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs'
+    path: './ruleset/microsoft.mrs'
+    path-in-bundle: 'geo/geosite/microsoft.mrs'
+  steam:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.mrs'
+    path: './ruleset/steam.mrs'
+    path-in-bundle: 'geo/geosite/steam.mrs'
+  telegram:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs'
+    path: './ruleset/telegram.mrs'
+    path-in-bundle: 'geo/geosite/telegram.mrs'
+  telegram_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs'
+    path: './ruleset/telegram_ip.mrs'
+    path-in-bundle: 'geo/geoip/telegram.mrs'
+  x:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/twitter.mrs'
+    path: './ruleset/x.mrs'
+    path-in-bundle: 'geo/geosite/twitter.mrs'
+  x_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs'
+    path: './ruleset/x_ip.mrs'
+    path-in-bundle: 'geo/geoip/twitter.mrs'
+  xbox:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/xbox.mrs'
+    path: './ruleset/xbox.mrs'
+    path-in-bundle: 'geo/geosite/xbox.mrs'
+
+# 路由规则
 rules:
   # 内网直连
   - RULE-SET,private,本地直连
