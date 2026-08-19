@@ -32,9 +32,9 @@ proxies:
 
 # 基础全局配置
 log-level: silent
+find-process-mode: strict
 unified-delay: true
 tcp-concurrent: true
-find-process-mode: strict
 external-ui-url: 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
 
 profile:
@@ -47,18 +47,18 @@ foreignDNS: &foreignDNS ['https://dns.cloudflare.com/dns-query#默认代理', 'h
 
 dns:
   enable: true
-  use-hosts: true
   cache-algorithm: arc
-  use-system-hosts: true
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-range6: fdfe:dcba:9876::1/64
-  fake-ip-filter: ['rule-set:private', 'rule-set:fakeip_filter']
-  proxy-server-nameserver: *chinaDNS
+  fake-ip-filter: ['rule-set:private', 'rule-set:fakeip_filter', 'rule-set:geolocation-cn']
+  use-hosts: true
+  use-system-hosts: true
   default-nameserver: ['223.5.5.5', '119.29.29.29']
   nameserver: *foreignDNS
   nameserver-policy:
     'rule-set:cn': *chinaDNS
+  proxy-server-nameserver: *chinaDNS
   direct-nameserver: ['223.5.5.5', '119.29.29.29']
 
 hosts:
@@ -86,51 +86,51 @@ tun:
   enable: true
   stack: system
   auto-route: true
-  strict-route: true
   auto-redirect: true
   auto-detect-interface: true
   dns-hijack: ['any:53', 'tcp://any:53']
+  strict-route: true
 
 # 策略组通用配置
 group_common:
   group_common_select:
     &group_common_select {
       type: select,
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
       interval: 600,
+      empty-fallback: REJECT,
       timeout: 3000,
       max-failed-times: 3,
-      empty-fallback: REJECT,
-      url: 'https://connectivitycheck.gstatic.com/generate_204',
     }
 
   group_common_auto:
     &group_common_auto {
       type: url-test,
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
       interval: 600,
+      tolerance: 50,
+      empty-fallback: REJECT,
       timeout: 3000,
       max-failed-times: 3,
-      empty-fallback: REJECT,
-      url: 'https://connectivitycheck.gstatic.com/generate_204',
-      tolerance: 50,
       include-all: true,
       exclude-type: 'DIRECT',
-      icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png',
       hidden: true,
+      icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png',
     }
 
   group_common_load:
     &group_common_load {
       type: load-balance,
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
       interval: 600,
+      strategy: 'sticky-sessions',
+      empty-fallback: REJECT,
       timeout: 3000,
       max-failed-times: 3,
-      empty-fallback: REJECT,
-      url: 'https://connectivitycheck.gstatic.com/generate_204',
-      strategy: 'sticky-sessions',
       include-all: true,
       exclude-type: 'DIRECT',
-      icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png',
       hidden: true,
+      icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png',
     }
 
 # 通用代理组
@@ -158,7 +158,10 @@ proxies_common:
 group_filter:
   HK_filter: &HK_filter { filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong)' }
   JP_filter: &JP_filter { filter: '(?i)(🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan)' }
-  US_filter: &US_filter { filter: '(?i)(🇺🇸|美国|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|圣地亚哥|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)' }
+  US_filter:
+    &US_filter {
+      filter: '(?i)(🇺🇸|美国|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|圣地亚哥|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)',
+    }
   SG_filter: &SG_filter { filter: '(?i)(🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore)' }
   TW_filter: &TW_filter { filter: '(?i)(🇹🇼|台湾|台北|高雄|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)' }
   low_filter: &low_filter { filter: '^(?!.*(?:剩|期|客户端|软件)).*(?:(?<!\d)0\.[0-9]|下载|低倍)' }
@@ -332,8 +335,8 @@ proxy-groups:
 
 # 规则集通用配置
 rule_providers_common:
-  rule_providers_domain: &rule_providers_domain { type: http, format: mrs, interval: 86400, behavior: domain }
-  rule_providers_ip: &rule_providers_ip { type: http, format: mrs, interval: 86400, behavior: ipcidr }
+  rule_providers_domain: &rule_providers_domain { type: http, interval: 86400, behavior: domain, format: mrs }
+  rule_providers_ip: &rule_providers_ip { type: http, interval: 86400, behavior: ipcidr, format: mrs }
 
 # 定义规则集
 rule-providers:
