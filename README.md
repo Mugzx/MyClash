@@ -1,5 +1,7 @@
 # MyClash
 
+**越是常用越要细分，不常用只保证可用。**
+
 ## 配置文件
 
 使用方法：复制链接，导入代理客户端
@@ -13,7 +15,6 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 > [!WARNING]
 > - DNS配置和路由规则是配套的，非必要不要破坏正常分流
 > - 规则为 `rule-set` 模式，使用 `domain` 与 `ipcidr` 格式，不引用 Geodata（避免臃肿）
-> - 一些较为复杂的网络情况下，`geolocation-cn` 可能分流不完全，可以改用 `cn_additional`
 
 「IPv6」：在 [4f29c75](https://github.com/Mugzx/MyClash/commit/4f29c75) 里去掉了相关的开启字段（应该根据情况手动开启）。
 
@@ -35,7 +36,7 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 - `Games` (Steam+Xbox)
 - `GitHub`
 - `Google`
-- `Media` (YouTube+TikTok+Twitch)
+- `YouTube`
 - `Microsoft`
 - `Telegram`
 - `X`
@@ -63,8 +64,7 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 感谢以下项目以及所有上游项目
 
 - [YiXuanZX/rules](https://github.com/YiXuanZX/rules)
-- [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)
-- [wwqgtxx/clash-rules](https://github.com/wwqgtxx/clash-rules)
+- [appshubcc/bett-rules](https://github.com/appshubcc/bett-rules)
 - [217heidai/adblockfilters](https://github.com/217heidai/adblockfilters)
 - [Koolson/Qure](https://github.com/Koolson/Qure)
 - [AIsouler/MyClash](https://github.com/AIsouler/MyClash)
