@@ -33,7 +33,7 @@ https://github.com/Mugzx/MyClash/raw/main/Config/myclash.yaml
 - `负载均衡`
 - `AI`
 - `FCM`
-- `Games` (Steam+Xbox)
+- `Games`
 - `GitHub`
 - `Google`
 - `YouTube`
