@@ -31,7 +31,6 @@ proxies:
 
 # 基础全局配置
 log-level: silent
-find-process-mode: strict
 unified-delay: true
 tcp-concurrent: true
 external-ui-url: 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
