@@ -1,0 +1,535 @@
+# 代理集通用配置
+proxy_providers_common:
+  &proxy_providers_common {
+    type: http,
+    interval: 86400,
+    exclude-type: 'direct|reject|rematch',
+    health-check: { enable: true, url: https://connectivitycheck.gstatic.com/generate_204, interval: 600 },
+  }
+
+# 全局过滤节点
+global_exclude_filter:
+  &global_exclude_filter {
+    exclude-filter: '(?i)(群|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|电报|频道|无法|说明|提示|访问|支持|教程|关注|更新|作者|加入|超时|收藏|优惠|福利|邀请|好友|失联|选择|剩余|公益|发布|DIZTNA|通路|登录|定时|渠道|牢记|永久|余额|阁下|本站|刷新|导航|建议|重置|以下|过滤|⚠️|@|t\.me\/\+|\bexpire\b|\bhttps?:\/\/|\.com|\btraffic\b)',
+  }
+
+# 定义代理集，可配置多个订阅
+proxy-providers:
+  provider1:
+    <<: [*proxy_providers_common, *global_exclude_filter]
+    url: '' # 订阅链接
+    age-secret-key: '' # Age加密
+    path: ./proxy_provider/1.yaml
+    override:
+      additional-prefix: 'p1 | ' # 添加前缀
+
+# 自定义节点配置
+proxies:
+  - { name: 'DIRECT-DUAL', type: direct }
+  - { name: 'DIRECT-IPv4-PREF', type: direct, ip-version: ipv4-prefer }
+  - { name: 'DIRECT-IPv6-PREF', type: direct, ip-version: ipv6-prefer }
+
+# 基础全局配置
+log-level: silent
+unified-delay: true
+tcp-concurrent: true
+external-ui-url: 'https://codeload.github.com/Zephyruso/zashboard/zip/refs/heads/gh-pages-cdn-fonts'
+
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# 国内外 DNS 定义
+chinaDNS: &chinaDNS ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query']
+foreignDNS: &foreignDNS ['https://dns.cloudflare.com/dns-query#默认代理', 'https://dns.google/dns-query#默认代理']
+
+dns:
+  enable: true
+  cache-algorithm: arc
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: fdfe:dcba:9876::1/64
+  fake-ip-filter: ['rule-set:connectivity-check', 'rule-set:geolocation-cn', 'rule-set:ntp', 'rule-set:private']
+  use-hosts: true
+  use-system-hosts: true
+  nameserver: *foreignDNS
+  nameserver-policy:
+    'rule-set:cn': *chinaDNS
+  proxy-server-nameserver: *chinaDNS
+  direct-nameserver: *chinaDNS
+
+hosts:
+  'dns.alidns.com': ['223.5.5.5', '223.6.6.6']
+  'doh.pub': ['1.12.12.12', '120.53.53.53']
+  'dns.cloudflare.com': ['1.1.1.1', '1.0.0.1']
+  'dns.google': ['8.8.8.8', '8.8.4.4']
+
+  # 屏蔽哔哩哔哩PCDN，解决访问视频/直播卡顿问题
+  '+.mcdn.bilivideo.cn': ['0.0.0.0']
+  '+.edge.mountaintoys.cn': ['0.0.0.0']
+  '+.h2.smtcdns.net': ['0.0.0.0']
+
+ntp:
+  enable: true
+  write-to-system: true
+  server: 'ntp.aliyun.com'
+  port: 123
+  interval: 60
+
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+  dns-hijack: ['any:53', 'tcp://any:53']
+  strict-route: true
+
+# 策略组通用配置
+group_common:
+  group_common_select:
+    &group_common_select {
+      type: select,
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
+      interval: 600,
+      empty-fallback: REJECT,
+      timeout: 3000,
+      max-failed-times: 3,
+    }
+
+  group_common_auto:
+    &group_common_auto {
+      type: url-test,
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
+      interval: 600,
+      tolerance: 50,
+      empty-fallback: REJECT,
+      timeout: 3000,
+      max-failed-times: 3,
+      include-all: true,
+      exclude-type: 'DIRECT',
+      hidden: true,
+      icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png',
+    }
+
+  group_common_load:
+    &group_common_load {
+      type: load-balance,
+      url: 'https://connectivitycheck.gstatic.com/generate_204',
+      interval: 600,
+      strategy: 'sticky-sessions',
+      empty-fallback: REJECT,
+      timeout: 3000,
+      max-failed-times: 3,
+      include-all: true,
+      exclude-type: 'DIRECT',
+      hidden: true,
+      icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Round_Robin.png',
+    }
+
+# 通用代理策略组
+proxies_common:
+  proxies_default:
+    &proxies_default {
+      proxies:
+        [
+          '默认代理',
+          '自动选择',
+          '手动选择',
+          '负载均衡',
+          '本地直连',
+          '香港',
+          '日本',
+          '新加坡',
+          '美利坚',
+          '低倍率节点',
+          '高倍率节点',
+          '其他节点',
+        ],
+    }
+
+# 定义地区正则过滤
+group_filter:
+  HK_filter: &HK_filter { filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong)' }
+  JP_filter: &JP_filter { filter: '(?i)(🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan)' }
+  SG_filter: &SG_filter { filter: '(?i)(🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore)' }
+  US_filter:
+    &US_filter {
+      filter: '(?i)(🇺🇸|美国|美利坚|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|圣地亚哥|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)',
+    }
+  low_filter:
+    &low_filter {
+      filter: '(?i)(^(?!.*(?:剩|期)).*(?:(?<!\d)0\.[0-9]|(?<=[ \[\(|｜丨∣┃\-‐–—−－﹣])0[*×✕✖⨯⨉x倍])|(?:(?<=[ \[\(|｜丨∣┃\-‐–—−－﹣])[*×✕✖⨯⨉x]0(?=[ \)\]]|倍|$))|^(?!.*(?:客户端|软件)).*下载|低倍|免费|(?<![A-Za-z])free(?![A-Za-z]))',
+    }
+  high_filter:
+    &high_filter {
+      filter: '(?i)(?<=[ \[\(|｜丨∣┃\-‐–—−－﹣])((?:[*×✕✖⨯⨉x]\s*(?:(?:[2-9]\d*|[1-9]\d+)(?:\.\d+)?|1\.\d*[1-9]\d*))|(?:(?<![\d.])(?:(?:[2-9]\d*|[1-9]\d+)(?:\.\d+)?|1\.\d*[1-9]\d*)\s*(?:倍|[*×✕✖⨯⨉x])))',
+    }
+  exclude_filter:
+    &exclude_filter {
+      exclude-filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong|🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan|🇺🇸|美国|美利坚|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|圣地亚哥|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states|🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore)',
+      exclude-type: 'direct',
+    }
+
+# 定义策略组
+proxy-groups:
+  # 通用策略组
+  - name: '默认代理'
+    <<: *group_common_select
+    proxies:
+      ['香港', '日本', '新加坡', '美利坚', '低倍率节点', '高倍率节点', '其他节点', '自动选择', '手动选择', '负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Proxy.png'
+
+  - name: '自动选择'
+    <<: *group_common_auto
+
+  - name: '负载均衡'
+    <<: *group_common_load
+
+  # 海外策略组
+  - name: 'AI'
+    <<: [*group_common_select, *proxies_default]
+    default-selected: '美利坚'
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AI.png'
+
+  - name: 'Discord'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Discord.png'
+
+  - name: 'FCM'
+    <<: [*group_common_select, *proxies_default]
+    default-selected: '本地直连'
+    icon: 'https://raw.githubusercontent.com/MiToverG422/Qure/master/IconSet/Color/fcm.png'
+
+  - name: 'Games'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Game.png'
+
+  - name: 'GitHub'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/GitHub.png'
+
+  - name: 'Google'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Google_Search.png'
+
+  - name: 'Microsoft'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Microsoft.png'
+
+  - name: 'PayPal'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/PayPal.png'
+
+  - name: 'Spotify'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Spotify.png'
+
+  - name: 'Telegram'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Telegram.png'
+
+  - name: 'X'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/X.png'
+
+  - name: 'YouTube'
+    <<: [*group_common_select, *proxies_default]
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png'
+
+  # 地区策略组
+  - name: '香港'
+    <<: [*group_common_select, *HK_filter]
+    include-all: true
+    proxies: ['香港-自动选择', '香港-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Hong_Kong.png'
+  - name: '香港-自动选择'
+    <<: [*group_common_auto, *HK_filter]
+  - name: '香港-负载均衡'
+    <<: [*group_common_load, *HK_filter]
+
+  - name: '日本'
+    <<: [*group_common_select, *JP_filter]
+    include-all: true
+    proxies: ['日本-自动选择', '日本-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Japan.png'
+  - name: '日本-自动选择'
+    <<: [*group_common_auto, *JP_filter]
+  - name: '日本-负载均衡'
+    <<: [*group_common_load, *JP_filter]
+
+  - name: '新加坡'
+    <<: [*group_common_select, *SG_filter]
+    include-all: true
+    proxies: ['新加坡-自动选择', '新加坡-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Singapore.png'
+  - name: '新加坡-自动选择'
+    <<: [*group_common_auto, *SG_filter]
+  - name: '新加坡-负载均衡'
+    <<: [*group_common_load, *SG_filter]
+
+  - name: '美利坚'
+    <<: [*group_common_select, *US_filter]
+    include-all: true
+    proxies: ['美利坚-自动选择', '美利坚-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/United_States.png'
+  - name: '美利坚-自动选择'
+    <<: [*group_common_auto, *US_filter]
+  - name: '美利坚-负载均衡'
+    <<: [*group_common_load, *US_filter]
+
+  - name: '低倍率节点'
+    <<: [*group_common_select, *low_filter]
+    include-all: true
+    proxies: ['低倍率节点-自动选择', '低倍率节点-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available_1.png'
+  - name: '低倍率节点-自动选择'
+    <<: [*group_common_auto, *low_filter]
+  - name: '低倍率节点-负载均衡'
+    <<: [*group_common_load, *low_filter]
+
+  - name: '高倍率节点'
+    <<: [*group_common_select, *high_filter]
+    include-all: true
+    proxies: ['高倍率节点-自动选择', '高倍率节点-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Airport.png'
+  - name: '高倍率节点-自动选择'
+    <<: [*group_common_auto, *high_filter]
+  - name: '高倍率节点-负载均衡'
+    <<: [*group_common_load, *high_filter]
+
+  - name: '其他节点'
+    <<: [*group_common_select, *exclude_filter]
+    include-all: true
+    proxies: ['其他节点-自动选择', '其他节点-负载均衡']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Server.png'
+  - name: '其他节点-自动选择'
+    <<: [*group_common_auto, *exclude_filter]
+  - name: '其他节点-负载均衡'
+    <<: [*group_common_load, *exclude_filter]
+
+  # 特殊策略组
+  - name: '手动选择'
+    <<: *group_common_select
+    include-all: true
+    exclude-type: 'DIRECT'
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Static.png'
+
+  - name: '本地直连'
+    <<: *group_common_select
+    proxies: ['DIRECT-DUAL', 'DIRECT-IPv4-PREF', 'DIRECT-IPv6-PREF']
+    url: 'https://connectivitycheck.platform.hicloud.com/generate_204'
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Direct.png'
+
+  - name: '广告拦截'
+    <<: *group_common_select
+    proxies: ['REJECT', 'REJECT-DROP', 'PASS']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/AdBlack.png'
+
+  - name: '漏网之鱼'
+    <<: *group_common_select
+    proxies: ['默认代理', '手动选择', '本地直连']
+    icon: 'https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Puzzle.png'
+
+# 规则集通用配置
+rule_providers_common:
+  rule_providers_domain: &rule_providers_domain { type: http, interval: 86400, behavior: domain, format: mrs }
+  rule_providers_ip: &rule_providers_ip { type: http, interval: 86400, behavior: ipcidr, format: mrs }
+
+# 定义规则集
+rule-providers:
+  # 特殊规则集
+  adblockmihomo:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs'
+    path: './ruleset/adblockmihomo.mrs'
+    path-in-bundle: 'geo/geosite/category-ads-all.mrs'
+  connectivity-check:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/connectivity-check.mrs'
+    path: './ruleset/connectivity-check.mrs'
+    path-in-bundle: 'geo/geosite/connectivity-check.mrs'
+  ntp:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/category-ntp.mrs'
+    path: './ruleset/ntp.mrs'
+    path-in-bundle: 'geo/geosite/category-ntp.mrs'
+
+  # 直连规则集
+  paypal_cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/paypal@cn.mrs'
+    path: './ruleset/paypal@cn.mrs'
+    path-in-bundle: 'geo/geosite/paypal@cn.mrs'
+  private:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/private.mrs'
+    path: './ruleset/private.mrs'
+    path-in-bundle: 'geo/geosite/private.mrs'
+  private_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/private.mrs'
+    path: './ruleset/private_ip.mrs'
+    path-in-bundle: 'geo/geoip/private.mrs'
+  games_cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/category-games@cn.mrs'
+    path: './ruleset/games@cn.mrs'
+    path-in-bundle: 'geo/geosite/category-games@cn.mrs'
+  steam_asn:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/asn/AS32590.mrs'
+    path: './ruleset/steam_asn.mrs'
+    path-in-bundle: 'asn/AS32590.mrs'
+  microsoft_cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/microsoft@cn.mrs'
+    path: './ruleset/microsoft@cn.mrs'
+    path-in-bundle: 'geo/geosite/microsoft@cn.mrs'
+  geolocation-cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/geolocation-cn.mrs'
+    path: './ruleset/geolocation-cn.mrs'
+    path-in-bundle: 'geo/geosite/geolocation-cn.mrs'
+  cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/cn.mrs'
+    path: './ruleset/cn.mrs'
+    path-in-bundle: 'geo/geosite/cn.mrs'
+  cn_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/cn.mrs'
+    path: './ruleset/cn_ip.mrs'
+    path-in-bundle: 'geo/geoip/cn.mrs'
+
+  # 海外规则集
+  ai:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/category-ai-!cn.mrs'
+    path: './ruleset/ai.mrs'
+    path-in-bundle: 'geo/geosite/category-ai-!cn.mrs'
+  discord:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/discord.mrs'
+    path: './ruleset/discord.mrs'
+    path-in-bundle: 'geo/geosite/discord.mrs'
+  googlefcm:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/googlefcm.mrs'
+    path: './ruleset/googlefcm.mrs'
+    path-in-bundle: 'geo/geosite/googlefcm.mrs'
+  games:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/category-games-!cn.mrs'
+    path: './ruleset/games.mrs'
+    path-in-bundle: 'geo/geosite/category-games-!cn.mrs'
+  github:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs'
+    path: './ruleset/github.mrs'
+    path-in-bundle: 'geo/geosite/github.mrs'
+  youtube:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/youtube.mrs'
+    path: './ruleset/youtube.mrs'
+    path-in-bundle: 'geo/geosite/youtube.mrs'
+  google:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/google.mrs'
+    path: './ruleset/google.mrs'
+    path-in-bundle: 'geo/geosite/google.mrs'
+  google_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/google.mrs'
+    path: './ruleset/google_ip.mrs'
+    path-in-bundle: 'geo/geoip/google.mrs'
+  microsoft:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/microsoft.mrs'
+    path: './ruleset/microsoft.mrs'
+    path-in-bundle: 'geo/geosite/microsoft.mrs'
+  microsoft_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/microsoft.mrs'
+    path: './ruleset/microsoft_ip.mrs'
+    path-in-bundle: 'geo/geoip/microsoft.mrs'
+  paypal:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/paypal.mrs'
+    path: './ruleset/paypal.mrs'
+    path-in-bundle: 'geo/geosite/paypal.mrs'
+  spotify:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/spotify.mrs'
+    path: './ruleset/spotify.mrs'
+    path-in-bundle: 'geo/geosite/spotify.mrs'
+  spotify_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/spotify.mrs'
+    path: './ruleset/spotify_ip.mrs'
+    path-in-bundle: 'geo/geoip/spotify.mrs'
+  telegram:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/telegram.mrs'
+    path: './ruleset/telegram.mrs'
+    path-in-bundle: 'geo/geosite/telegram.mrs'
+  telegram_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/telegram.mrs'
+    path: './ruleset/telegram_ip.mrs'
+    path-in-bundle: 'geo/geoip/telegram.mrs'
+  x:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/twitter.mrs'
+    path: './ruleset/x.mrs'
+    path-in-bundle: 'geo/geosite/twitter.mrs'
+  x_ip:
+    <<: *rule_providers_ip
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geoip/twitter.mrs'
+    path: './ruleset/x_ip.mrs'
+    path-in-bundle: 'geo/geoip/twitter.mrs'
+  geolocation-!cn:
+    <<: *rule_providers_domain
+    url: 'https://raw.githubusercontent.com/appshubcc/bett-rules/meta/geo/geosite/geolocation-!cn.mrs'
+    path: './ruleset/geolocation-!cn.mrs'
+    path-in-bundle: 'geo/geosite/geolocation-!cn.mrs'
+
+# 自定义规则配置
+rules:
+  # 直连规则
+  - RULE-SET,games_cn,本地直连 # 已包含 steam 下载域名
+  - RULE-SET,microsoft_cn,本地直连
+  - RULE-SET,paypal_cn,本地直连
+  - RULE-SET,private,本地直连
+  - RULE-SET,private_ip,本地直连,no-resolve
+  - RULE-SET,steam_asn,本地直连,no-resolve
+  - DOMAIN,auroraoss.com,本地直连 # 避免 Aurora Store 无法匿名
+
+  # 拦截规则
+  - RULE-SET,adblockmihomo,广告拦截
+  - AND,((NETWORK,UDP),(DST-PORT,443),(NOT,((OR,((RULE-SET,geolocation-cn),(RULE-SET,cn_ip,no-resolve)))))),REJECT
+
+  # 代理规则
+  - RULE-SET,ai,AI
+  - RULE-SET,discord,Discord
+  - RULE-SET,googlefcm,FCM
+  - RULE-SET,games,Games
+  - RULE-SET,github,GitHub
+  - RULE-SET,youtube,YouTube
+  - RULE-SET,google,Google
+  - RULE-SET,google_ip,Google,no-resolve
+  - RULE-SET,microsoft,Microsoft
+  - RULE-SET,microsoft_ip,Microsoft,no-resolve
+  - RULE-SET,paypal,PayPal
+  - RULE-SET,spotify,Spotify
+  - RULE-SET,spotify_ip,Spotify,no-resolve
+  - RULE-SET,telegram,Telegram
+  - RULE-SET,telegram_ip,Telegram,no-resolve
+  - RULE-SET,x,X
+  - RULE-SET,x_ip,X,no-resolve
+
+  # 兜底规则
+  - RULE-SET,geolocation-cn,本地直连
+  - RULE-SET,geolocation-!cn,默认代理
+  - RULE-SET,cn_ip,本地直连
+  - MATCH,漏网之鱼
